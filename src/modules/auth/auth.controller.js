@@ -1,6 +1,7 @@
 import * as authService from "./auth.service.js";
 import ApiResponse from "../../common/utils/api-response.js";
-
+import ApiError from "../../common/utils/api-error.js";
+import { avatarUpload } from "./auth.service.js";
 const register = async (req, res) => {
   const user = await authService.register(req.body);
   ApiResponse.created(
@@ -56,6 +57,22 @@ const getMe = async (req, res) => {
   ApiResponse.ok(res, "User profile", user);
 };
 
+const uploadAvatar = async(req, res)=>{
+  try {
+    const file = req.file;
+    if(!file){
+      return ApiError.badRequest(res, "No file Uploaded please send file with avatar as a field name")
+    }
+
+    const result = await authService.avatarUpload(req.user.id, file);
+    return ApiResponse.ok(res, "avatar uploaded successfully",{avatarUrl:result.url});
+  } catch (error) {
+    console.log(error);
+    return ApiError.badRequest(res, error.message || "failed To upload Avatar");
+
+  }
+}
+
 export {
   register,
   login,
@@ -65,4 +82,6 @@ export {
   forgotPassword,
   resetPassword,
   getMe,
+  uploadAvatar,
+  avatarUpload,
 };
