@@ -24,6 +24,8 @@ router.put(
   validate(ResetPasswordDto),
   controller.resetPassword,
 );
+
+router.post("/avatar", authenticate)
 router.get("/me", authenticate, controller.getMe);
 
 export default router;
