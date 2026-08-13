@@ -1,11 +1,29 @@
-const createOwner = async (req, res) => {};
+import * as ownerService from "../services/owner.service.js";
+import ApiResponse from "../../../common/utils/api-response.js";
 
-const getAllOwners = async (req, res) => {};
+const createOwner = async (req, res) => {
+  const owner = await ownerService.createOwner(req.body);
+  ApiResponse.created(res, "owner created successfully ", owner);
+};
 
-const getOwnerById = async (req, res) => {};
+const getAllOwners = async (req, res) => {
+  const owners = await ownerService.getAllOwners();
+  ApiResponse.ok(res, "Owners fetched success", owners);
+};
 
-const updateOwner = async (req, res) => {};
+const getOwnerById = async (req, res) => {
+  const owner = await ownerService.getOwnerById(req.params.id);
+  ApiResponse.ok(res, "Found the user !!", owner);
+};
 
-const deleteOwner = async (req, res) => {};
+const updateOwner = async (req, res) => {
+  const updateOwner = await ownerService.updateOwner(req.params.id, req.body);
+  ApiResponse.ok(res, "Updated success", updateOwner);
+};
+
+const deleteOwner = async (req, res) => {
+  const deleteOwner = await ownerService.deleteOwner(req.params.id);
+  ApiResponse.ok(res, "deleted");
+};
 
 export { createOwner, getAllOwners, getOwnerById, updateOwner, deleteOwner };
